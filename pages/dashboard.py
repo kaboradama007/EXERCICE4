@@ -30,6 +30,22 @@ data_reg=ds.groupby(["region","Annee"]).sum()
 data_reg=data_reg.reset_index()
 data2=data_reg.drop(["pays", "province","District"], axis=1)
 
+
+######MISE A  JOUR DES SESSIONS
+
+
+if "data_loaded" not in st.session_state:
+    st.session_state.data_loaded = False
+
+if not st.session_state.data_loaded:
+    ressource = pd.read_csv("Gouvernance_data.csv", sep=';', decimal=',', encoding='ISO-8859-1')
+    ds = pd.read_csv("Dataset_DS.csv", sep=';', decimal=',', encoding='ISO-8859-1')
+    st.session_state.data_loaded = True
+
+
+
+
+
 #Calcul des indicateurs
 # Soins curatif et hospitalisation
 data2["Nouveaux contacts par habitant"] = (data2["CE-Nouveaux consultants"] / data2["GEN - Population total"]).round(2)
@@ -219,6 +235,9 @@ with onglet1:
         objectif=90
     elif var_y=="Taux (%) de confirmation du paludisme":
         objectif=95
+
+
+
 
 
     ##_____________________________________________________________________________________________
